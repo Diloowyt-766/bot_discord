@@ -50,6 +50,7 @@ async def play_music(ctx, url):
             'extractaudio': True,
             'forcejson': True,
         }
+        yt-dlp --cookies ./youtube.com_cookies.txt url
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
