@@ -49,7 +49,7 @@ async def play_music(ctx, url):
             'noplaylist': True,
             'extractaudio': True,
             'forcejson': True,
-            'cookiefile': './cookies.txt',  # Utilisation du fichier de cookies
+            'cookiefile': 'cookies.txt',  # Utilisation du fichier de cookies
         }
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
