@@ -68,7 +68,7 @@ async def play_music(ctx, url):
             'noplaylist': True,
             'extractaudio': True,
             'forcejson': True,
-            'cookiefile': './cookies.txt',  # Utilisation du fichier de cookies
+            'cookiefile': 'cookies.txt',  # Utilisation du fichier de cookies
             'verbose': True,  # Activer les logs détaillés
         }
 
