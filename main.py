@@ -55,7 +55,11 @@ async def play_music(ctx, url):
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
             song_title = info.get('title', 'Musique inconnue')
-            audio_url = info['url']
+            audio_url = info.get('url')
+
+            if not audio_url:
+                await ctx.send("❌ Impossible de récupérer l'URL audio. Vérifiez l'URL ou les cookies.")
+                return
 
         # Lecture de la musique en streaming avec FFmpeg
         ffmpeg_options = {
@@ -132,7 +136,15 @@ async def queue(ctx):
 
 @bot.command()
 async def help(ctx):
-    var message = "!play <url> - pour lire vos musiques \n\t !stop - pour arrêter la musique\n\t !skip - passer à la musique suivante \n\t !queue - afficher la liste d'attente "
+    """Affiche les commandes disponibles."""
+    message = """
+**Commandes disponibles :**
+- `!play <url>` : Joue une musique à partir d'une URL YouTube.
+- `!stop` : Arrête la musique et vide la file d'attente.
+- `!skip` : Passe à la musique suivante dans la file d'attente.
+- `!queue` : Affiche la file d'attente des musiques.
+- `!help` : Affiche ce message d'aide.
+    """
     await ctx.send(message)
 
 bot.run(os.getenv('DISCORD_TOKEN'))
