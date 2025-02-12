@@ -1,3 +1,7 @@
+# Netscape HTTP Cookie File
+# http://curl.haxx.se/rfc/cookie_spec.html
+# This is a generated file!  Do not edit.
+
 .youtube.com	TRUE	/	TRUE	1747132876	SOCS	CAAaBgiA-9S5Bg
 .youtube.com	TRUE	/	FALSE	1754732079	SID	g.a000tQgv5pQp7D6QrxrYu5ySlZhgLxVz0hmKiEgt55bO5gSeYehHH4wjgJkkhn8aMNnJwOpwYAACgYKASsSARYSFQHGX2MilYVSpveA_rpf87wNPbeR8xoVAUF8yKp4m3aSQtW4CgCcLGKqSOpy0076
 .youtube.com	TRUE	/	TRUE	1754732079	__Secure-1PSID	g.a000tQgv5pQp7D6QrxrYu5ySlZhgLxVz0hmKiEgt55bO5gSeYehHxq6YRQYCn2VFM_Uk_8-dlgACgYKASgSARYSFQHGX2MiCtVgFLO4gQFxt6y_4ttzBBoVAUF8yKoLxQZ9rbBG42bdtKYNagU80076
@@ -12,8 +16,8 @@
 .youtube.com	TRUE	/	TRUE	1739980226	PREF	f7=140&tz=Europe.Paris&f4=4000000&f5=20000
 .youtube.com	TRUE	/	TRUE	0	wide	1
 .youtube.com	TRUE	/	TRUE	1754927423	__Secure-YEC	Cgt0RkVia1ItWWxvSSjEhrO9BjIiCgJGUhIcEhgSFhMLFBUWFwwYGRobHB0eHw4PIBAREiEgPg%3D%3D
-.youtube.com	TRUE	/	TRUE	1754934829	__Secure-1PSIDTS	sidts-CjEBEJ3XVzy9F6o4YVtKu7kaRaJn_ew6q_bCnDenoeRoauJwu0KtFcD5Mr0K6wh1LlojEAA
-.youtube.com	TRUE	/	TRUE	1754934829	__Secure-3PSIDTS	sidts-CjEBEJ3XVzy9F6o4YVtKu7kaRaJn_ew6q_bCnDenoeRoauJwu0KtFcD5Mr0K6wh1LlojEAA
-.youtube.com	TRUE	/	FALSE	1754934829	SIDCC	AKEyXzXr5lKSg3usPDbCv7Dv-_06ZKsUrYX8deRuBxlUkdAy0yP54IbcwMQlxDRjlmf6fIBsTXQe
-.youtube.com	TRUE	/	TRUE	1754934829	__Secure-1PSIDCC	AKEyXzVmIjGWlH6JuIvqRPF7mgtfuC7_kC7BJyHXS24F7CuRIJnhX7QuVa_8yxTwDNaisKGS1so
-.youtube.com	TRUE	/	TRUE	1754934829	__Secure-3PSIDCC	AKEyXzWzqcztkB3GFxlvP7PFvbSCXpHrnXSBSxiPtkdh1vCKUVVtuqTTKkqm-IAUPamNFzvfAC-S
+.youtube.com	TRUE	/	TRUE	1754937236	__Secure-1PSIDTS	sidts-CjEBEJ3XV_qqpYYlZH5SzgD1lCniom8Ng2NLbggPEmvcG8M1jjknze05w-A96uclK-R6EAA
+.youtube.com	TRUE	/	TRUE	1754937236	__Secure-3PSIDTS	sidts-CjEBEJ3XV_qqpYYlZH5SzgD1lCniom8Ng2NLbggPEmvcG8M1jjknze05w-A96uclK-R6EAA
+.youtube.com	TRUE	/	FALSE	1754937236	SIDCC	AKEyXzU_QswD6zbB8k7yMApkbM_2IbqhZPqNZKrhpQJrpvYHzUFNdPS7LE_2yVpfy7SCSWnhQ5Cg
+.youtube.com	TRUE	/	TRUE	1754937236	__Secure-1PSIDCC	AKEyXzV1ZhNVch3vAY7TR9hlvYbOr4vhi8ABx6fmP3IWPTcOTiJyYu-yCm1dR3OT_qC98DEAVjY
+.youtube.com	TRUE	/	TRUE	1754937236	__Secure-3PSIDCC	AKEyXzXArvMrI4vcgE-g6SYIQJ24SveU4KQk6nnlfI-lwwgKYbWYhgCpMlwEQJVS6WN3Aw8Qn7m2
