@@ -44,12 +44,13 @@ async def play_music(ctx, url):
 
         # Options pour yt-dlp avec gestion des cookies
         ydl_opts = {
-            'format': 'bestaudio/best',
-            'quiet': True,
-            'noplaylist': True,
-            'extractaudio': True,
-            'forcejson': True,
-            'cookiefile': './cookies.txt',  # Utilisation du fichier de cookies
+        'format': 'bestaudio/best',
+        'quiet': False,  # Désactiver le mode silencieux pour voir les logs
+        'noplaylist': True,
+        'extractaudio': True,
+        'forcejson': True,
+        'cookiefile': './cookies.txt',  # Utilisation du fichier de cookies
+        'verbose': True,  # Activer les logs détaillés
         }
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
