@@ -19,10 +19,9 @@ def check_queue(ctx):
     """Joue la musique suivante si la file d'attente n'est pas vide."""
     if ctx.guild.id in queues and queues[ctx.guild.id]:
         next_url = queues[ctx.guild.id].pop(0)
-        asyncio.create_task(play_music(ctx, next_url))
+        bot.loop.create_task(play_music(ctx, next_url))
     else:
-        # Optionnel : Informer que la file d'attente est vide
-        asyncio.create_task(ctx.send("🎶 La file d'attente est vide."))
+        bot.loop.create_task(ctx.send("🎶 La file d'attente est vide."))
 
 async def play_music(ctx, url):
     """Se connecte au salon vocal et joue une musique YouTube en streaming."""
