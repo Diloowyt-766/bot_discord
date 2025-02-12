@@ -130,4 +130,9 @@ async def queue(ctx):
     else:
         await ctx.send("❌ La file d'attente est vide.")
 
+@bot.command()
+async def help(ctx):
+    var message = "!play <url> - pour lire vos musiques \n\t !stop - pour arrêter la musique\n\t !skip - passer à la musique suivante \n\t !queue - afficher la liste d'attente "
+    await ctx.send(message)
+
 bot.run(os.getenv('DISCORD_TOKEN'))
