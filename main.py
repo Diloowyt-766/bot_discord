@@ -42,15 +42,15 @@ async def play_music(ctx, url):
             await voice_client.move_to(voice_channel)
             await ctx.send(f"🔄 Déplacement dans : {voice_channel.name}")
 
-        # Télécharge les informations sur la vidéo sans télécharger l'audio
+        # Options pour yt-dlp avec gestion des cookies
         ydl_opts = {
             'format': 'bestaudio/best',
             'quiet': True,
             'noplaylist': True,
             'extractaudio': True,
             'forcejson': True,
+            'cookiefile': './cookies.txt',  # Utilisation du fichier de cookies
         }
-        yt-dlp --cookies ./youtube.com_cookies.txt url
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
@@ -120,5 +120,14 @@ async def skip(ctx):
         await ctx.send("⏭️ Musique suivante...")
     else:
         await ctx.send("❌ Aucune musique en cours de lecture.")
+
+@bot.command()
+async def queue(ctx):
+    """Affiche la file d'attente des musiques."""
+    if ctx.guild.id in queues and queues[ctx.guild.id]:
+        queue_list = "\n".join([f"{i+1}. {url}" for i, url in enumerate(queues[ctx.guild.id])])
+        await ctx.send(f"🎶 File d'attente :\n{queue_list}")
+    else:
+        await ctx.send("❌ La file d'attente est vide.")
 
 bot.run(os.getenv('DISCORD_TOKEN'))
