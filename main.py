@@ -72,29 +72,36 @@ async def play_music(ctx, url):
             'verbose': True,  # Activer les logs détaillés
         }
 
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=False)
-            song_title = info.get('title', 'Musique inconnue')
-            audio_url = info.get('url')
+        try:
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(url, download=False)
+                song_title = info.get('title', 'Musique inconnue')
+                audio_url = info.get('url')
 
-            if not audio_url:
-                await ctx.send("❌ Impossible de récupérer l'URL audio. Vérifiez l'URL ou les cookies.")
-                return
+                if not audio_url:
+                    await ctx.send("❌ Impossible de récupérer l'URL audio. Vérifiez l'URL ou les cookies.")
+                    return
 
-        # Lecture de la musique en streaming avec FFmpeg
-        ffmpeg_options = {
-            'options': '-vn',
-            'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5'
-        }
-        source = discord.FFmpegPCMAudio(audio_url, **ffmpeg_options)
-        source = discord.PCMVolumeTransformer(source)
+            # Lecture de la musique en streaming avec FFmpeg
+            ffmpeg_options = {
+                'options': '-vn',
+                'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5'
+            }
+            source = discord.FFmpegPCMAudio(audio_url, **ffmpeg_options)
+            source = discord.PCMVolumeTransformer(source)
 
-        voice_client.play(source, after=lambda e: check_queue(ctx))
+            voice_client.play(source, after=lambda e: check_queue(ctx))
 
-        if voice_client.is_playing():
-            await ctx.send(f"🎶 Lecture en cours : **{song_title}**")
-        else:
-            await ctx.send("❌ Impossible de lire la musique. Vérifie les logs.")
+            if voice_client.is_playing():
+                await ctx.send(f"🎶 Lecture en cours : **{song_title}**")
+            else:
+                await ctx.send("❌ Impossible de lire la musique. Vérifie les logs.")
+
+        except youtube_dl.utils.DownloadError as e:
+            if "Sign in to confirm you’re not a bot" in str(e):
+                await ctx.send("❌ Erreur d'authentification. Vérifiez le fichier `cookies.txt`.")
+            else:
+                await ctx.send(f"❌ Une erreur s'est produite lors du téléchargement : {str(e)}")
 
     except Exception as e:
         await ctx.send(f"❌ Une erreur s'est produite : {str(e)}")
