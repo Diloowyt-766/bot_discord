@@ -10,7 +10,7 @@ load_dotenv()
 # Configuration du bot avec les intents
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents,help_command=None)
 
 # File d'attente pour gérer plusieurs musiques
 queues = {}
