@@ -4,7 +4,24 @@ import yt_dlp as youtube_dl
 import asyncio
 from dotenv import load_dotenv
 from discord.ext import commands
+from flask import Flask
+import threading
 
+# Démarrer un serveur HTTP minimal pour Render
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot Discord en cours d'exécution."
+
+def run_flask():
+    app.run(host='0.0.0.0', port=10000)
+
+flask_thread = threading.Thread(target=run_flask)
+flask_thread.daemon = True
+flask_thread.start()
+
+# Charger les variables d'environnement
 load_dotenv()
 
 # Configuration du bot avec les intents
@@ -138,4 +155,5 @@ async def queue(ctx):
     else:
         await ctx.send("❌ La file d'attente est vide.")
 
+# Démarrer le bot
 bot.run(os.getenv('DISCORD_TOKEN'))
