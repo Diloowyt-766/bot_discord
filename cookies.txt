@@ -1,6 +1,4 @@
-# Netscape HTTP Cookie File
-# http://curl.haxx.se/rfc/cookie_spec.html
-# This is a generated file!  Do not edit.
+
 
 .youtube.com	TRUE	/	TRUE	1747132876	SOCS	CAAaBgiA-9S5Bg
 .youtube.com	TRUE	/	FALSE	1754732079	SID	g.a000tQgv5pQp7D6QrxrYu5ySlZhgLxVz0hmKiEgt55bO5gSeYehHH4wjgJkkhn8aMNnJwOpwYAACgYKASsSARYSFQHGX2MilYVSpveA_rpf87wNPbeR8xoVAUF8yKp4m3aSQtW4CgCcLGKqSOpy0076
