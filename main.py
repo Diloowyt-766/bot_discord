@@ -20,6 +20,9 @@ def check_queue(ctx):
     if ctx.guild.id in queues and queues[ctx.guild.id]:
         next_url = queues[ctx.guild.id].pop(0)
         asyncio.create_task(play_music(ctx, next_url))
+    else:
+        # Optionnel : Informer que la file d'attente est vide
+        asyncio.create_task(ctx.send("🎶 La file d'attente est vide."))
 
 async def play_music(ctx, url):
     """Se connecte au salon vocal et joue une musique YouTube en streaming."""
@@ -44,13 +47,13 @@ async def play_music(ctx, url):
 
         # Options pour yt-dlp avec gestion des cookies
         ydl_opts = {
-        'format': 'bestaudio/best',
-        'quiet': False,  # Désactiver le mode silencieux pour voir les logs
-        'noplaylist': True,
-        'extractaudio': True,
-        'forcejson': True,
-        'cookiefile': './cookies.txt',  # Utilisation du fichier de cookies
-        'verbose': True,  # Activer les logs détaillés
+            'format': 'bestaudio/best',
+            'quiet': False,  # Désactiver le mode silencieux pour voir les logs
+            'noplaylist': True,
+            'extractaudio': True,
+            'forcejson': True,
+            'cookiefile': './cookies.txt',  # Utilisation du fichier de cookies
+            'verbose': True,  # Activer les logs détaillés
         }
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
@@ -121,8 +124,9 @@ async def skip(ctx):
     voice_client = discord.utils.get(bot.voice_clients, guild=ctx.guild)
 
     if voice_client and voice_client.is_playing():
-        voice_client.stop()  # Stoppe la musique actuelle pour déclencher check_queue
+        voice_client.stop()  # Arrête la musique en cours
         await ctx.send("⏭️ Musique suivante...")
+        check_queue(ctx)  # Déclenche la lecture de la musique suivante
     else:
         await ctx.send("❌ Aucune musique en cours de lecture.")
 
@@ -134,6 +138,5 @@ async def queue(ctx):
         await ctx.send(f"🎶 File d'attente :\n{queue_list}")
     else:
         await ctx.send("❌ La file d'attente est vide.")
-
 
 bot.run(os.getenv('DISCORD_TOKEN'))
