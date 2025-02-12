@@ -138,12 +138,12 @@ async def queue(ctx):
 async def help(ctx):
     """Affiche les commandes disponibles."""
     message = """
-**Commandes disponibles :**
-- `!play <url>` : Joue une musique à partir d'une URL YouTube.
-- `!stop` : Arrête la musique et vide la file d'attente.
-- `!skip` : Passe à la musique suivante dans la file d'attente.
-- `!queue` : Affiche la file d'attente des musiques.
-- `!help` : Affiche ce message d'aide.
+    **Commandes disponibles :**
+    - `!play <url>` : Joue une musique à partir d'une URL YouTube.
+    - `!stop` : Arrête la musique et vide la file d'attente.
+    - `!skip` : Passe à la musique suivante dans la file d'attente.
+    - `!queue` : Affiche la file d'attente des musiques.
+    - `!help` : Affiche ce message d'aide.
     """
     await ctx.send(message)
 
