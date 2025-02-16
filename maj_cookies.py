@@ -1,23 +1,17 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 import json
 
 
-# Chemin vers ChromeDriver
-CHROME_DRIVER_PATH = '/chemin/vers/chromedriver'
-
-# Chemin vers le profil Chrome (optionnel)
-CHROME_PROFILE_PATH = '/chemin/vers/profil/chrome'
-
 # Options pour Chrome
 options = webdriver.ChromeOptions()
-options.add_argument(f'--user-data-dir={CHROME_PROFILE_PATH}')  # Utiliser un profil Chrome existant
 options.add_argument('--headless')  # Exécuter en mode headless (sans interface graphique)
 
 # Démarrer Chrome avec Selenium
-service = Service(CHROME_DRIVER_PATH)
+service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=options)
 
 try:
