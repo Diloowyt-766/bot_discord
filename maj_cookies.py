@@ -1,14 +1,15 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import time
-import json
-
 
 # Options pour Chrome
-options = webdriver.ChromeOptions()
+options = Options()
 options.add_argument('--headless')  # Exécuter en mode headless (sans interface graphique)
+options.add_argument('--disable-gpu')  # Désactiver GPU pour éviter des problèmes
+options.add_argument('--no-sandbox')  # Désactiver le sandbox pour éviter des erreurs
 
 # Démarrer Chrome avec Selenium
 service = Service(ChromeDriverManager().install())
@@ -36,6 +37,9 @@ try:
             )
 
     print("✅ Cookies exportés avec succès dans cookies.txt")
+
+except Exception as e:
+    print(f"❌ Une erreur s'est produite : {str(e)}")
 
 finally:
     # Fermer le navigateur
