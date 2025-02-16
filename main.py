@@ -162,5 +162,17 @@ async def queue(ctx):
     else:
         await ctx.send("❌ La file d'attente est vide.")
 
+@bot.command()
+async def update_cookies(ctx):
+    """Met à jour le fichier cookies.txt."""
+    await ctx.send("⏳ Mise à jour des cookies en cours...")
+
+    try:
+        # Exécuter le script pour exporter les cookies
+        subprocess.run(['python3', 'maj_cookies.py'], check=True)
+        await ctx.send("✅ Cookies mis à jour avec succès !")
+    except subprocess.CalledProcessError as e:
+        await ctx.send(f"❌ Erreur lors de la mise à jour des cookies : {str(e)}")
+
 # Démarrer le bot
 bot.run(os.getenv('DISCORD_TOKEN'))
