@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from discord.ext import commands
 from flask import Flask
 import threading
+import subprocess
 
 # Démarrer un serveur HTTP minimal pour Render
 app = Flask(__name__)
@@ -168,11 +169,18 @@ async def update_cookies(ctx):
     await ctx.send("⏳ Mise à jour des cookies en cours...")
 
     try:
+        # Vérifier si le fichier maj_cookies.py existe
+        if not os.path.exists('maj_cookies.py'):
+            await ctx.send("❌ Le fichier maj_cookies.py est introuvable.")
+            return
+
         # Exécuter le script pour exporter les cookies
         subprocess.run(['python3', 'maj_cookies.py'], check=True)
         await ctx.send("✅ Cookies mis à jour avec succès !")
     except subprocess.CalledProcessError as e:
         await ctx.send(f"❌ Erreur lors de la mise à jour des cookies : {str(e)}")
+    except Exception as e:
+        await ctx.send(f"❌ Une erreur s'est produite : {str(e)}")
 
 # Démarrer le bot
 bot.run(os.getenv('DISCORD_TOKEN'))
