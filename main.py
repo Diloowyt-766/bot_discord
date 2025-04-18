@@ -1,22 +1,159 @@
-# Netscape HTTP Cookie File
-# http://curl.haxx.se/rfc/cookie_spec.html
-# This is a generated file!  Do not edit.
+import discord
+import os
+import yt_dlp as youtube_dl
+import asyncio
+from dotenv import load_dotenv
+from discord.ext import commands
+from flask import Flask
+import threading
 
-.youtube.com	TRUE	/	TRUE	1756634723	SOCS	CAISEwgDEgk3MzI3NzE3MjQaAmZyIAEaBgiAhZm-Bg
-.youtube.com	TRUE	/	FALSE	1759866762	HSID	AqU1AOTkioKohNrDN
-.youtube.com	TRUE	/	TRUE	1759866762	SSID	ANPKfcpjr3qUbD7ez
-.youtube.com	TRUE	/	FALSE	1759866762	APISID	FiDM4R0l5kQw-KpV/ARbX47bh-mZZK7t67
-.youtube.com	TRUE	/	TRUE	1759866762	SAPISID	vg8PkLSgGecb_zfw/AJFOwCXI-Pi3ogOr1
-.youtube.com	TRUE	/	TRUE	1759866762	__Secure-1PAPISID	vg8PkLSgGecb_zfw/AJFOwCXI-Pi3ogOr1
-.youtube.com	TRUE	/	TRUE	1759866762	__Secure-3PAPISID	vg8PkLSgGecb_zfw/AJFOwCXI-Pi3ogOr1
-.youtube.com	TRUE	/	FALSE	1759866762	SID	g.a000vwgv5rxmLp_PyGjFReWV3TxJbZYN_fh_5V9f5m781lFvkW_NFMQbrd7iD8FBxF4b7dpjIwACgYKAaASARYSFQHGX2Mi5J3Y64CssZ-XzW5olfzBqhoVAUF8yKovt1dzLph6G43FZhAvtrWk0076
-.youtube.com	TRUE	/	TRUE	1759866762	__Secure-1PSID	g.a000vwgv5rxmLp_PyGjFReWV3TxJbZYN_fh_5V9f5m781lFvkW_N_dTP1pg4sIiSX0HyeJwU5AACgYKAR0SARYSFQHGX2Mib1vTgI_aWX-dWcOuND6OcBoVAUF8yKrCA1RZwqlPHPl44vVXQMsJ0076
-.youtube.com	TRUE	/	TRUE	1759866762	__Secure-3PSID	g.a000vwgv5rxmLp_PyGjFReWV3TxJbZYN_fh_5V9f5m781lFvkW_NhoEQDu_hc3HushoMIfTDtgACgYKAXASARYSFQHGX2MiEgNd5-Dn8jKbYcmlUA8IgRoVAUF8yKq-Y_ohWC_ytweCefFpioCT0076
-.youtube.com	TRUE	/	TRUE	1760122352	LOGIN_INFO	AFmmF2swRQIgOCYomP76FZw0LHGvGaCz39w3jif3ID8ZhPy6248-4tkCIQDZ77x49H65PzbxLarXy18Vkp-vzp9ynbPEGquyeb3Ggw:QUQ3MjNmeTZYODBfdmQ4MTNiTm8tWGRYcWZBRzZlNnc4T2tXZmFjMk1hMW92M21FTzJ0WlhaNUFpdDg0MXZIaktESjZhdURxQzRYbzV1ZGx3V1h3RTJsNEtidGVNRXJpQTJjTHpOQnVwdmdCNjdobklwdlFuSWduOUtzd1VneGQwY3hWMXhzT08tdmZRMERYbFB5S1FacFVUSGd6RnZ5SEdn
-.youtube.com	TRUE	/	TRUE	0	wide	1
-.youtube.com	TRUE	/	TRUE	1745348477	PREF	tz=Europe.Paris&f7=140
-.youtube.com	TRUE	/	TRUE	1760295356	__Secure-1PSIDTS	sidts-CjEB7pHptRz90iEOQNQ8aoMNyRs_Zj27uDoEiXVDgmTAqWwAKOPj4Rr4S5HbX_vD4U66EAA
-.youtube.com	TRUE	/	TRUE	1760295356	__Secure-3PSIDTS	sidts-CjEB7pHptRz90iEOQNQ8aoMNyRs_Zj27uDoEiXVDgmTAqWwAKOPj4Rr4S5HbX_vD4U66EAA
-.youtube.com	TRUE	/	FALSE	1760295680	SIDCC	AKEyXzXolTrz73R_FiJ7MJvCj07x_cKBTxsGFPEiSN0h48MhzzlrK3hGn_aGKrNzDVCE0j0ksKU
-.youtube.com	TRUE	/	TRUE	1760295680	__Secure-1PSIDCC	AKEyXzWQtYV4XVietl_qDFmyoVgfQP4io4xPSAICwdZz6glW0khuU1WNDVdxJ-g-r-6I01-KGOU
-.youtube.com	TRUE	/	TRUE	1760295680	__Secure-3PSIDCC	AKEyXzWot0qNvGY-pZRt86aV5mMGJPSyjE5B8mzEc8dWbJpnShMa18Lg1oMiZlSQ21_iZIvPrQ
+# Démarrer un serveur HTTP minimal pour Render
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot Discord en cours d'exécution."
+
+def run_flask():
+    app.run(host='0.0.0.0', port=10000)
+
+flask_thread = threading.Thread(target=run_flask)
+flask_thread.daemon = True
+flask_thread.start()
+
+# Charger les variables d'environnement
+load_dotenv()
+
+# Configuration du bot avec les intents
+intents = discord.Intents.default()
+intents.message_content = True
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+# File d'attente pour gérer plusieurs musiques
+queues = {}
+
+def check_queue(ctx):
+    """Joue la musique suivante si la file d'attente n'est pas vide."""
+    if ctx.guild.id in queues and queues[ctx.guild.id]:
+        next_url = queues[ctx.guild.id].pop(0)
+        bot.loop.create_task(play_music(ctx, next_url))
+    else:
+        bot.loop.create_task(ctx.send("🎶 La file d'attente est vide."))
+
+async def play_music(ctx, url):
+    """Se connecte au salon vocal et joue une musique YouTube en streaming."""
+    try:
+        if ctx.author.voice is None or ctx.author.voice.channel is None:
+            await ctx.send("❌ Tu dois être dans un salon vocal pour utiliser cette commande !")
+            return
+
+        voice_channel = ctx.author.voice.channel
+        voice_client = discord.utils.get(bot.voice_clients, guild=ctx.guild)
+
+        if not voice_client or not voice_client.is_connected():
+            try:
+                voice_client = await voice_channel.connect()
+                await ctx.send(f"✅ Connecté au salon vocal : {voice_channel.name}")
+            except discord.errors.ClientException:
+                await ctx.send("❌ Impossible de rejoindre le salon vocal. Vérifie mes permissions !")
+                return
+        elif voice_client.channel != voice_channel:
+            await voice_client.move_to(voice_channel)
+            await ctx.send(f"🔄 Déplacement dans : {voice_channel.name}")
+
+        # Options pour yt-dlp avec gestion des cookies
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'quiet': False,  # Désactiver le mode silencieux pour voir les logs
+            'noplaylist': True,
+            'extractaudio': True,
+            'forcejson': True,
+            'cookiefile': './cookies.txt',  # Utilisation du fichier de cookies
+            'verbose': True,  # Activer les logs détaillés
+        }
+
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            song_title = info.get('title', 'Musique inconnue')
+            audio_url = info.get('url')
+
+            if not audio_url:
+                await ctx.send("❌ Impossible de récupérer l'URL audio. Vérifiez l'URL ou les cookies.")
+                return
+
+        # Lecture de la musique en streaming avec FFmpeg
+        ffmpeg_options = {
+            'options': '-vn',
+            'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5'
+        }
+        source = discord.FFmpegPCMAudio(audio_url, **ffmpeg_options)
+        source = discord.PCMVolumeTransformer(source)
+
+        voice_client.play(source, after=lambda e: check_queue(ctx))
+
+        if voice_client.is_playing():
+            await ctx.send(f"🎶 Lecture en cours : **{song_title}**")
+        else:
+            await ctx.send("❌ Impossible de lire la musique. Vérifie les logs.")
+
+    except Exception as e:
+        await ctx.send(f"❌ Une erreur s'est produite : {str(e)}")
+
+@bot.command()
+async def play(ctx, url: str):
+    """Commande pour jouer une musique YouTube."""
+    if ctx.guild.id not in queues:
+        queues[ctx.guild.id] = []
+
+    voice_client = discord.utils.get(bot.voice_clients, guild=ctx.guild)
+
+    if voice_client:
+        if voice_client.is_playing():  # Si une musique est en cours, on ajoute à la file d'attente
+            queues[ctx.guild.id].append(url)
+            await ctx.send("✅ Musique ajoutée à la file d'attente")
+        else:  # Si aucune musique n'est en cours, on commence à jouer
+            await play_music(ctx, url)
+    else:
+        # Si le bot n'est pas dans un salon vocal, on rejoint le salon et commence la musique
+        if ctx.author.voice:
+            voice_channel = ctx.author.voice.channel
+            voice_client = await voice_channel.connect()
+            await play_music(ctx, url)
+        else:
+            await ctx.send("❌ Tu dois être dans un salon vocal pour utiliser cette commande !")
+
+@bot.command()
+async def stop(ctx):
+    """Arrête la musique et vide la file d'attente."""
+    voice_client = discord.utils.get(bot.voice_clients, guild=ctx.guild)
+
+    if voice_client and voice_client.is_playing():
+        voice_client.stop()  # Arrêter la musique en cours
+        queues[ctx.guild.id] = []  # Vider la file d'attente
+        await ctx.send("⏹️ Musique arrêtée et file d'attente vidée.")
+    else:
+        await ctx.send("❌ Aucune musique en cours de lecture.")
+
+@bot.command()
+async def skip(ctx):
+    """Passe à la musique suivante dans la file d'attente."""
+    voice_client = discord.utils.get(bot.voice_clients, guild=ctx.guild)
+
+    if voice_client and voice_client.is_playing():
+        voice_client.stop()  # Arrête la musique en cours
+        await ctx.send("⏭️ Musique suivante...")
+        check_queue(ctx)  # Déclenche la lecture de la musique suivante
+    else:
+        await ctx.send("❌ Aucune musique en cours de lecture.")
+
+@bot.command()
+async def queue(ctx):
+    """Affiche la file d'attente des musiques."""
+    if ctx.guild.id in queues and queues[ctx.guild.id]:
+        queue_list = "\n".join([f"{i+1}. {url}" for i, url in enumerate(queues[ctx.guild.id])])
+        await ctx.send(f"🎶 File d'attente :\n{queue_list}")
+    else:
+        await ctx.send("❌ La file d'attente est vide.")
+
+# Démarrer le bot
+bot.run(os.getenv('DISCORD_TOKEN'))
