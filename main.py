@@ -54,7 +54,7 @@ async def play_music(ctx, url):
         ydl_opts = {
             'format': 'bestaudio',
             'noplaylist': True,
-            'cookiefile': 'cookies.txt',
+            'cookiefile': './cookies.txt',
             'extract_flat': True,
             'quiet': True,
         }
