@@ -51,7 +51,7 @@ async def play_music(ctx, url):
             await voice_client.move_to(voice_channel)
             await ctx.send(f"🔄 Déplacé vers : {voice_channel.name}")
 
-        ydl_opts --cookies-from-browser = {
+        ydl_opts = {
             'format': 'bestaudio',
             'noplaylist': True,
             'cookiefile': 'cookies.txt',
