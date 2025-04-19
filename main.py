@@ -55,7 +55,6 @@ async def play_music(ctx, url):
             'format': 'bestaudio',
             'noplaylist': True,
             'cookiefile': 'cookies.txt',
-            'cookiesfrombrowser': ('brave','chrome'),
             'extract_flat': True,
             'quiet': True,
         }
