@@ -52,11 +52,22 @@ async def play_music(ctx, url):
             await ctx.send(f"🔄 Déplacé vers : {voice_channel.name}")
 
         ydl_opts = {
-            'format': 'bestaudio',
+            
+            'format': 'bestaudio/best',  # Plus flexible que 'bestaudio' seul
             'noplaylist': True,
             'cookiefile': './cookies.txt',
-            'extract_flat': True,
             'quiet': True,
+            # Ajoutez ces options pour contourner les restrictions :
+            'extractor_args': {
+                'youtube': {
+                    'skip': ['dash', 'hls']  # Évite les formats fragmentés
+                }
+            },
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
         }
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
