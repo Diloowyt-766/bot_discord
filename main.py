@@ -53,21 +53,23 @@ async def play_music(ctx, url):
 
         ydl_opts = {
             
-            'format': 'bestaudio/best',  # Plus flexible que 'bestaudio' seul
+            'format': 'bestaudio/best',
             'noplaylist': True,
             'cookiefile': './cookies.txt',
             'quiet': True,
-            # Ajoutez ces options pour contourner les restrictions :
-            'extractor_args': {
-                'youtube': {
-                    'skip': ['dash', 'hls']  # Évite les formats fragmentés
-                }
-            },
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }],
+            # Nouveaux paramètres pour contourner le problème de format :
+            'postprocessor_args': ['-ar', '16000'], # Optionnel : fixe le sample rate
+            'outtmpl': '-', # Nécessaire pour certains streams
+            'restrictfilenames': True,
+            
+            # Remplacement des options extractor_args :
+            'extract_flat': 'in_playlist',
+            
+            # Format de secours si le premier échoue :
+            'audio-format': 'best',
+            
+            # Configuration FFmpeg :
+            'ffmpeg_location': '/path/to/ffmpeg' # Si nécessaire
         }
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
